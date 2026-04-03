@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài tập 3 - Countdown Timer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #282c34;
+            color: white;
+        }
+
+        .timer-container {
+            text-align: center;
+            background: #1c1e22;
+            padding: 40px 60px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        #timer {
+            font-size: 80px;
+            font-weight: bold;
+            letter-spacing: 5px;
+            transition: color 0.3s ease;
+        }
+
+        .warning {
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { color: #ff4757; transform: scale(1); }
+            50% { color: #ff6b81; transform: scale(1.05); }
+            100% { color: #ff4757; transform: scale(1); }
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: none; 
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            color: black;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 24px;
+        }
+
+        .modal-content button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="timer-container">
+        <h2>Thời gian làm bài</h2>
+        <div id="timer">10:00</div>
+    </div>
+
+    <div id="timeoutModal" class="modal-overlay">
+        <div class="modal-content">
+            <p>Đã hết thời gian làm bài!</p>
+            <button onclick="closeModal()">Đóng</button>
+        </div>
+    </div>
+
+    <script>
+        let timeLeft = 600; 
+        const timerElement = document.getElementById('timer');
+        const modalElement = document.getElementById('timeoutModal');
+        
+        let countdownInterval;
+
+        function updateTimer() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+
+            const formattedMinutes = String(minutes).padStart(2, '0');
+            const formattedSeconds = String(seconds).padStart(2, '0');
+
+            timerElement.textContent = `${formattedMinutes}:${formattedSeconds}`;
+
+            if (timeLeft <= 60 && timeLeft > 0) {
+                timerElement.classList.add('warning');
+            }
+
+            if (timeLeft <= 0) {
+                clearInterval(countdownInterval);
+                timerElement.classList.remove('warning');
+                timerElement.textContent = "00:00";
+                
+                modalElement.style.display = 'flex';
+            } else {
+                timeLeft--; 
+            }
+        }
+
+        countdownInterval = setInterval(updateTimer, 1000);
+
+        function closeModal() {
+            modalElement.style.display = 'none';
+        }
+    </script>
+</body>
+</html>

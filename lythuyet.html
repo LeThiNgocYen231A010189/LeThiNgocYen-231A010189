@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phần 1: Lý Thuyết</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 20px;
+    background: white;
+    color: #000;
+    line-height: 1.6;
+  }
+
+  h1 {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .question {
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+  }
+
+  h2 {
+    margin-bottom: 15px;
+  }
+
+  h3 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+
+  p {
+    margin: 10px 0;
+  }
+
+  ul, ol {
+    margin: 10px 0;
+    padding-left: 30px;
+  }
+
+  li {
+    margin: 5px 0;
+  }
+
+  pre {
+    background: #f5f5f5;
+    padding: 15px;
+    margin: 15px 0;
+    overflow-x: auto;
+  }
+
+  code {
+    background: #f5f5f5;
+    padding: 2px 5px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+  }
+
+  th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+  }
+
+  th {
+    background: #f0f0f0;
+  }
+
+  .note {
+    background: #f9f9f9;
+    padding: 15px;
+    margin: 15px 0;
+    border-left: 3px solid #999;
+  }
+</style>
+</head>
+<body>
+
+<h1>Phần 1: Lý Thuyết</h1>
+
+<div class="question">
+  <h2>Câu 1 (10 điểm): Sự khác biệt giữa position: absolute và position: relative trong CSS</h2>
+
+  <h3>position: relative</h3>
+  <p>Phần tử vẫn nằm ở vị trí bình thường trong trang. Khi dùng <code>top</code>, <code>left</code> thì nó dịch chuyển so với chính vị trí ban đầu của nó. Các phần tử xung quanh không bị ảnh hưởng.</p>
+  <pre>
+.chu-de {
+  position: relative;
+  top: 10px;
+}</pre>
+
+  <h3>position: absolute</h3>
+  <p>Phần tử bị tách ra khỏi luồng trang. Nó định vị dựa vào phần tử cha gần nhất có position: relative. Nếu không có thì định vị theo cửa sổ trình duyệt.</p>
+  <pre>/* Ví dụ: đặt badge góc trên phải của card */
+.card {
+  position: relative;
+}
+.badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+}</pre>
+
+  <h3>Bảng so sánh</h3>
+  <table>
+    <tr><th>Tiêu chí</th><th>relative</th><th>absolute</th></tr>
+    <tr><td>Nằm trong luồng trang?</td><td>Có</td><td>Không</td></tr>
+    <tr><td>Định vị theo</td><td>Vị trí ban đầu của nó</td><td>Phần tử cha có relative</td></tr>
+    <tr><td>Dùng khi nào</td><td>Dịch nhẹ, tạo vùng tham chiếu</td><td>Badge, tooltip, overlay</td></tr>
+  </table>
+
+  <div class="note">Lưu ý: Khi deploy lên hosting, nếu dùng <code>absolute</code> với giá trị px cố định, layout có thể bị vỡ trên điện thoại. Nên kết hợp với Flexbox/Grid và kiểm tra bằng Chrome DevTools trước khi deploy.</div>
+</div>
+
+<div class="question">
+  <h2>Câu 2 (10 điểm): Quy trình đăng ký domain, cấu hình hosting và vai trò của DNS</h2>
+
+  <h3>Các bước đăng ký domain và cấu hình hosting</h3>
+  <ol>
+    <li>Vào trang như Namecheap, GoDaddy, tìm tên miền muốn đăng ký và thanh toán.</li>
+    <li>Mua gói hosting (hoặc dùng GitHub Pages miễn phí).</li>
+    <li>Vào trang quản lý domain, trỏ Nameserver hoặc DNS Record (loại A) về địa chỉ IP của hosting.</li>
+    <li>Upload file HTML/CSS/JS lên hosting (qua FTP hoặc File Manager).</li>
+    <li>Chờ 1-24 giờ để DNS cập nhật toàn cầu.</li>
+  </ol>
+
+  <h3>DNS là gì?</h3>
+  <p>DNS (Domain Name System) giống như danh bạ điện thoại: khi bạn gõ <code>mywebsite.com</code>, DNS sẽ tra ra địa chỉ IP thật (<code>104.21.55.12</code>) của server để trình duyệt kết nối đến.</p>
+
+  <h3>2 công cụ deploy không cần server riêng</h3>
+  <ul>
+    <li>GitHub Pages: Miễn phí. Push code lên GitHub, vào Settings, chọn Pages, chọn branch và có ngay link <code>username.github.io/tenrepo</code>.</li>
+    <li>Netlify: Kéo thả thư mục là xong. Tự động có HTTPS, tên miền tùy chỉnh, và cập nhật mỗi khi push code.</li>
+  </ul>
+
+  <h3>Rủi ro bảo mật nếu cấu hình sai</h3>
+  <ul>
+    <li>Không có HTTPS: Dữ liệu gửi qua form (email, mật khẩu) có thể bị đánh cắp.</li>
+    <li>Lộ cấu trúc thư mục: Nếu không có file index.html, server có thể hiển thị toàn bộ các file trong thư mục.</li>
+    <li>Dùng mật khẩu yếu cho hosting: Kẻ tấn công có thể chiếm quyền kiểm soát.</li>
+  </ul>
+</div>
+
+<div class="question">
+  <h2>Câu 3 (10 điểm): So sánh let, const và var về scope và hoisting</h2>
+
+  <h3>Bảng so sánh</h3>
+  <table>
+    <tr><th>Tiêu chí</th><th>var</th><th>let</th><th>const</th></tr>
+    <tr><td>Phạm vi (scope)</td><td>Function</td><td>Block {}</td><td>Block {}</td></tr>
+    <tr><td>Hoisting</td><td>Có (giá trị: undefined)</td><td>Có (không dùng được)</td><td>Có (không dùng được)</td></tr>
+    <tr><td>Khai báo lại</td><td>Được</td><td>Không</td><td>Không</td></tr>
+    <tr><td>Gán lại giá trị</td><td>Được</td><td>Được</td><td>Không</td></tr>
+  </table>
+
+  <h3>Ví dụ lỗi thường gặp với var</h3>
+  <pre>// Lỗi: var trong vòng lặp
+for (var i = 0; i < 3; i++) {
+  setTimeout(function() {
+    console.log(i); // In ra: 3, 3, 3 (sai!)
+  }, 1000);
+}
+
+for (let i = 0; i < 3; i++) {
+  setTimeout(function() {
+    console.log(i); // In ra: 0, 1, 2 (đúng!)
+  }, 1000);
+}</pre>
+  <p>Nguyên nhân: <code>var</code> có function scope nên biến <code>i</code> bị dùng chung. <code>let</code> có block scope nên mỗi vòng lặp có <code>i</code> riêng.</p>
+
+  <h3>Debug bằng Chrome DevTools</h3>
+  <ol>
+    <li>Nhấn F12, chọn tab Sources.</li>
+    <li>Click vào số dòng cần kiểm tra để đặt Breakpoint.</li>
+    <li>Chạy lại trang, code dừng tại dòng đó, xem giá trị biến ở panel bên phải.</li>
+    <li>Dùng nút Step Over để chạy từng dòng một.</li>
+    <li>Tab Console: gõ <code>console.log(i)</code> để kiểm tra nhanh.</li>
+  </ol>
+</div>
+
+<div class="question">
+  <h2>Câu 4 (10 điểm): Event Delegation trong JavaScript</h2>
+
+  <h3>Event Delegation là gì?</h3>
+  <p>Thay vì gắn sự kiện (event listener) cho từng phần tử con, ta chỉ gắn 1 listener duy nhất trên phần tử cha. Khi người dùng click vào con, sự kiện sẽ "nổi" lên cha (gọi là Event Bubbling) và cha xử lý thay.</p>
+
+  <div class="note">Ví dụ thực tế: Thay vì gắn nút "Xóa" cho 100 sản phẩm, chỉ gắn 1 lần trên danh sách.</div>
+
+  <h3>Ví dụ ứng dụng: Danh sách sản phẩm động</h3>
+  <pre>&lt;ul id="danh-sach"&gt;
+  &lt;li&gt;Sản phẩm A &lt;button class="xoa"&gt;Xóa&lt;/button&gt;&lt;/li&gt;
+  &lt;li&gt;Sản phẩm B &lt;button class="xoa"&gt;Xóa&lt;/button&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;script&gt;
+document.getElementById('danh-sach').addEventListener('click', function(e) {
+  if (e.target.classList.contains('xoa')) {
+    e.target.parentElement.remove(); 
+  }
+});
+
+function themSanPham(ten) {
+  document.getElementById('danh-sach').innerHTML +=
+    '&lt;li&gt;' + ten + ' &lt;button class="xoa"&gt;Xóa&lt;/button&gt;&lt;/li&gt;';
+}
+&lt;/script&gt;</pre>
+
+  <h3>Lợi ích</h3>
+  <ul>
+    <li>Tiết kiệm bộ nhớ: Ít listener hơn, trang chạy nhanh hơn.</li>
+    <li>Tự động hoạt động với phần tử mới: Thêm item vào danh sách không cần gắn lại event.</li>
+    <li>Code gọn hơn: Xử lý tập trung ở 1 chỗ, dễ đọc, dễ sửa.</li>
+  </ul>
+
+  <div class="note">Lưu ý: Dùng <code>e.target.closest('.class')</code> thay vì <code>e.target</code> khi phần tử có nhiều thẻ con lồng nhau (tránh click nhầm).</div>
+</div>
+
+</body>
+</html>

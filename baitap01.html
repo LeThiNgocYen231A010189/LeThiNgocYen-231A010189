@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài tập 1 - Danh sách sản phẩm</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        
+        .search-box { margin-bottom: 20px; }
+        .search-box input { padding: 10px; width: 300px; font-size: 16px; border: 1px solid #ccc; border-radius: 5px;}
+        
+        .product-list {
+            display: flex;
+            flex-wrap: wrap; 
+            gap: 15px;
+        }
+        
+        .product-item {
+            border: 1px solid #007BFF;
+            padding: 20px;
+            border-radius: 8px;
+            width: 200px;
+            text-align: center;
+            background-color: #f0f8ff;
+        }
+        
+        #error-msg {
+            color: red;
+            font-weight: bold;
+            display: none; 
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Danh Sách Sản Phẩm</h2>
+    
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Nhập tên sản phẩm cần tìm...">
+    </div>
+
+    <p id="error-msg">Không tìm thấy sản phẩm</p>
+    
+    <div id="productList" class="product-list">
+        </div>
+
+    <script>
+        const products = [
+            { id: 1, name: "Điện thoại iPhone 15" },
+            { id: 2, name: "Điện thoại Samsung S24" },
+            { id: 3, name: "Tai nghe AirPods Pro" },
+            { id: 4, name: "Đồng hồ Apple Watch" },
+            { id: 5, name: "Laptop MacBook Air" }
+        ];
+
+        const productListEl = document.getElementById('productList');
+        const searchInput = document.getElementById('searchInput');
+        const errorMsg = document.getElementById('error-msg');
+
+        function renderProducts(list) {
+            productListEl.innerHTML = ''; 
+
+            if (list.length === 0) {
+                errorMsg.style.display = 'block'; 
+            } else {
+                errorMsg.style.display = 'none'; 
+                
+                list.forEach(product => {
+                    const div = document.createElement('div');
+                    div.className = 'product-item';
+                    
+                    div.textContent = product.name; 
+                    
+                    productListEl.appendChild(div);
+                });
+            }
+        }
+
+        renderProducts(products);
+
+        searchInput.addEventListener('input', function(e) {
+            const keyword = e.target.value.trim().toLowerCase();
+            
+            const filteredProducts = products.filter(product => 
+                product.name.toLowerCase().includes(keyword)
+            );
+
+            renderProducts(filteredProducts);
+        });
+    </script>
+</body>
+</html>
